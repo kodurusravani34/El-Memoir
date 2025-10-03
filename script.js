@@ -1,102 +1,16 @@
-// Sample blog posts data
-const blogPosts = [
-    {
-        id: 1,
-        title: "Getting Started with React Hooks",
-        excerpt: "Learn how to use React Hooks to manage state and side effects in functional components. This comprehensive guide covers useState, useEffect, and custom hooks.",
-        category: "frontend",
-        date: "2025-09-28",
-        readTime: "8 min read",
-        content: "React Hooks revolutionized how we write React components..."
-    },
-    {
-        id: 2,
-        title: "Building RESTful APIs with Node.js",
-        excerpt: "A complete guide to creating robust and scalable REST APIs using Node.js, Express, and MongoDB. Learn best practices and security considerations.",
-        category: "backend",
-        date: "2025-09-25",
-        readTime: "12 min read",
-        content: "Building a RESTful API is a fundamental skill for backend developers..."
-    },
-    {
-        id: 3,
-        title: "My Journey into Web Development",
-        excerpt: "Sharing my personal story of how I transitioned from a different field into web development, the challenges I faced, and lessons learned along the way.",
-        category: "personal",
-        date: "2025-09-22",
-        readTime: "6 min read",
-        content: "Three years ago, I never imagined I would be writing code..."
-    },
-    {
-        id: 4,
-        title: "CSS Grid vs Flexbox: When to Use What",
-        excerpt: "Understanding the differences between CSS Grid and Flexbox, and knowing when to use each layout method for optimal results.",
-        category: "frontend",
-        date: "2025-09-20",
-        readTime: "10 min read",
-        content: "CSS Grid and Flexbox are both powerful layout systems..."
-    },
-    {
-        id: 5,
-        title: "Docker for Beginners",
-        excerpt: "Learn the basics of containerization with Docker. This tutorial covers everything from installation to deploying your first containerized application.",
-        category: "devops",
-        date: "2025-09-18",
-        readTime: "15 min read",
-        content: "Docker has revolutionized how we deploy and manage applications..."
-    },
-    {
-        id: 6,
-        title: "Flutter vs React Native: A Comparison",
-        excerpt: "An in-depth comparison of two popular cross-platform mobile development frameworks, helping you choose the right one for your next project.",
-        category: "mobile",
-        date: "2025-09-15",
-        readTime: "11 min read",
-        content: "Choosing the right framework for mobile development can be challenging..."
-    },
-    {
-        id: 7,
-        title: "Advanced JavaScript Concepts",
-        excerpt: "Dive deep into closures, prototypes, async/await, and other advanced JavaScript concepts that every developer should understand.",
-        category: "frontend",
-        date: "2025-09-12",
-        readTime: "14 min read",
-        content: "JavaScript is a powerful language with many advanced features..."
-    },
-    {
-        id: 8,
-        title: "Database Design Best Practices",
-        excerpt: "Essential principles for designing efficient and scalable databases. Learn about normalization, indexing, and performance optimization.",
-        category: "backend",
-        date: "2025-09-10",
-        readTime: "9 min read",
-        content: "Good database design is crucial for application performance..."
-    },
-    {
-        id: 9,
-        title: "Work-Life Balance in Tech",
-        excerpt: "Reflections on maintaining a healthy work-life balance while working in the fast-paced tech industry. Tips and strategies that actually work.",
-        category: "personal",
-        date: "2025-09-08",
-        readTime: "7 min read",
-        content: "The tech industry is known for its demanding pace..."
-    },
-    {
-        id: 10,
-        title: "Implementing CI/CD with GitHub Actions",
-        excerpt: "Step-by-step guide to setting up continuous integration and deployment pipelines using GitHub Actions for your projects.",
-        category: "devops",
-        date: "2025-09-05",
-        readTime: "13 min read",
-        content: "Continuous Integration and Deployment are essential practices..."
-    }
-];
+// Blog posts will be loaded from MongoDB
+let blogPosts = [];
+
+// API Base URL - Update this when you deploy your backend
+const API_BASE_URL = 'http://localhost:3000/api';
 
 // DOM elements
 const navLinks = document.querySelectorAll('.nav-link');
 const sections = document.querySelectorAll('.section');
 const themeToggle = document.getElementById('theme-toggle');
 const categoryButtons = document.querySelectorAll('.category-btn');
+const modal = document.getElementById('post-modal');
+const closeModal = document.getElementsByClassName('close')[0];
 
 // Initialize the application
 document.addEventListener('DOMContentLoaded', function() {
@@ -104,7 +18,8 @@ document.addEventListener('DOMContentLoaded', function() {
     setupNavigation();
     setupThemeToggle();
     setupCategoryFilters();
-    loadPosts();
+    setupModal();
+    loadPostsFromAPI();
 });
 
 // Theme management
@@ -161,12 +76,102 @@ function showSection(sectionId) {
     }
     
     // Load specific content based on section
-    if (sectionId === 'posts') {
-        loadAllPosts();
-    } else if (sectionId === 'explore') {
+    if (sectionId === 'explore') {
         loadExplorePosts('all');
     } else if (sectionId === 'home') {
         loadFeaturedPosts();
+    }
+}
+
+// Setup modal functionality
+function setupModal() {
+    closeModal.onclick = function() {
+        modal.style.display = "none";
+    }
+    
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+}
+
+// API Functions for MongoDB integration
+async function loadPostsFromAPI() {
+    try {
+        showLoading(document.getElementById('featured-posts-grid'));
+        const response = await fetch(`${API_BASE_URL}/posts`);
+        
+        if (!response.ok) {
+            // Fallback to sample data if API is not available
+            console.log('API not available, using sample data');
+            loadSamplePosts();
+            return;
+        }
+        
+        blogPosts = await response.json();
+        loadPosts();
+    } catch (error) {
+        console.error('Error loading posts:', error);
+        // Fallback to sample data
+        loadSamplePosts();
+    }
+}
+
+function loadSamplePosts() {
+    // Sample posts for testing when MongoDB is not connected
+    blogPosts = [
+        {
+            _id: "1",
+            title: "Welcome to My Blog",
+            category: "personal",
+            date: "2025-10-03",
+            content: "Welcome to my personal blog! This is where I'll be sharing my journey in technology, development insights, and personal thoughts. I'm Sravani, and I'm excited to connect with fellow developers and tech enthusiasts through this platform."
+        },
+        {
+            _id: "2",
+            title: "Getting Started with React Hooks",
+            category: "frontend",
+            date: "2025-09-28",
+            content: "React Hooks revolutionized how we write React components. In this comprehensive guide, we'll explore useState, useEffect, and custom hooks with practical examples and best practices."
+        }
+    ];
+    loadPosts();
+}
+
+async function createPost(postData) {
+    try {
+        const response = await fetch(`${API_BASE_URL}/posts`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(postData)
+        });
+        
+        if (response.ok) {
+            const newPost = await response.json();
+            blogPosts.unshift(newPost);
+            loadPosts();
+            return newPost;
+        }
+    } catch (error) {
+        console.error('Error creating post:', error);
+    }
+}
+
+async function deletePost(postId) {
+    try {
+        const response = await fetch(`${API_BASE_URL}/posts/${postId}`, {
+            method: 'DELETE'
+        });
+        
+        if (response.ok) {
+            blogPosts = blogPosts.filter(post => post._id !== postId);
+            loadPosts();
+        }
+    } catch (error) {
+        console.error('Error deleting post:', error);
     }
 }
 
@@ -189,7 +194,6 @@ function setupCategoryFilters() {
 // Post loading functions
 function loadPosts() {
     loadFeaturedPosts();
-    loadAllPosts();
     loadExplorePosts('all');
 }
 
@@ -201,16 +205,6 @@ function loadFeaturedPosts() {
     featuredPosts.forEach(post => {
         const postElement = createPostCard(post);
         featuredPostsGrid.appendChild(postElement);
-    });
-}
-
-function loadAllPosts() {
-    const allPostsGrid = document.getElementById('all-posts-grid');
-    
-    allPostsGrid.innerHTML = '';
-    blogPosts.forEach(post => {
-        const postElement = createPostCard(post);
-        allPostsGrid.appendChild(postElement);
     });
 }
 
@@ -245,28 +239,57 @@ function loadExplorePosts(category) {
 function createPostCard(post) {
     const postCard = document.createElement('div');
     postCard.className = 'post-card';
+    
+    // Create a content preview (first 150 characters)
+    const contentPreview = post.content ? 
+        (post.content.length > 150 ? 
+            post.content.substring(0, 150) + '...' : 
+            post.content) : '';
+    
     postCard.innerHTML = `
-        <span class="post-category">${capitalizeFirst(post.category)}</span>
+        <div class="post-header">
+            <span class="post-category">${capitalizeFirst(post.category)}</span>
+        </div>
         <h3 class="post-title">${post.title}</h3>
-        <p class="post-excerpt">${post.excerpt}</p>
+        <p class="post-preview">${contentPreview}</p>
         <div class="post-meta">
             <span class="post-date">
                 <i class="fas fa-calendar-alt"></i>
                 ${formatDate(post.date)}
             </span>
-            <span class="read-time">
-                <i class="fas fa-clock"></i>
-                ${post.readTime}
+            <span class="post-action">
+                <i class="fas fa-arrow-right"></i>
+                Read more
             </span>
         </div>
     `;
     
-    // Add click event to show post details (you can expand this to show full post)
+    // Add click event to show full post in modal
     postCard.addEventListener('click', function() {
-        showPostDetail(post);
+        showFullPost(post);
     });
     
     return postCard;
+}
+
+// Show full post in modal
+function showFullPost(post) {
+    const modalContent = document.getElementById('modal-post-content');
+    modalContent.innerHTML = `
+        <div class="modal-post-title">${post.title}</div>
+        <div class="modal-post-meta">
+            <span class="post-category">${capitalizeFirst(post.category)}</span>
+            <span class="post-date">
+                <i class="fas fa-calendar-alt"></i>
+                ${formatDate(post.date)}
+            </span>
+        </div>
+        <div class="modal-post-content-text">
+            ${post.content || 'Full content coming soon...'}
+        </div>
+    `;
+    
+    modal.style.display = "block";
 }
 
 // Utility functions
@@ -279,16 +302,11 @@ function formatDate(dateString) {
     return new Date(dateString).toLocaleDateString('en-US', options);
 }
 
-function showPostDetail(post) {
-    // Simple modal/alert for now - you can enhance this to show a proper modal
-    alert(`Post: ${post.title}\n\nCategory: ${capitalizeFirst(post.category)}\nDate: ${formatDate(post.date)}\nRead Time: ${post.readTime}\n\nExcerpt: ${post.excerpt}\n\nClick OK to continue reading...`);
-}
-
 // Search functionality (bonus feature)
 function searchPosts(query) {
     const searchResults = blogPosts.filter(post => 
         post.title.toLowerCase().includes(query.toLowerCase()) ||
-        post.excerpt.toLowerCase().includes(query.toLowerCase()) ||
+        post.content.toLowerCase().includes(query.toLowerCase()) ||
         post.category.toLowerCase().includes(query.toLowerCase())
     );
     return searchResults;

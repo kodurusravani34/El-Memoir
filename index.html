@@ -14,7 +14,6 @@
                 <h1 class="logo">El-memoir</h1>
                 <ul class="nav-menu">
                     <li><a href="#home" class="nav-link active">Home</a></li>
-                    <li><a href="#posts" class="nav-link">All Posts</a></li>
                     <li><a href="#explore" class="nav-link">Explore</a></li>
                     <li><a href="#about" class="nav-link">About</a></li>
                     <li><button id="theme-toggle" class="theme-btn"><i class="fas fa-moon"></i></button></li>
@@ -26,25 +25,12 @@
     <main>
         <!-- Home Section -->
         <section id="home" class="section active">
-            <div class="hero">
-                <h2>Welcome to My Digital Garden</h2>
-                <p>Sharing thoughts, experiences, and insights on web development, technology, and life.</p>
-            </div>
+            
             
             <div class="featured-posts">
                 <h3>Latest Posts</h3>
                 <div class="posts-grid" id="featured-posts-grid">
                     <!-- Featured posts will be loaded here -->
-                </div>
-            </div>
-        </section>
-
-        <!-- All Posts Section -->
-        <section id="posts" class="section">
-            <div class="container">
-                <h2>All Posts</h2>
-                <div class="posts-grid" id="all-posts-grid">
-                    <!-- All posts will be loaded here -->
                 </div>
             </div>
         </section>
@@ -73,7 +59,7 @@
                 <div class="about-content">
                     <div class="about-text">
                         <h2>About Me</h2>
-                        <p>Hello! I'm a passionate developer who loves to share knowledge and experiences through writing. This blog is my digital space where I document my journey in technology, share tutorials, and reflect on various aspects of development and life.</p>
+                        <p>Hello! I'm Sravani, a passionate developer who loves to share knowledge and experiences through writing. This blog is my digital space where I document my journey in technology, share tutorials, and reflect on various aspects of development and life.</p>
                         
                         <h3>What I Do</h3>
                         <ul>
@@ -88,7 +74,6 @@
                         <div class="social-links">
                             <a href="#" class="social-link"><i class="fab fa-github"></i> GitHub</a>
                             <a href="#" class="social-link"><i class="fab fa-linkedin"></i> LinkedIn</a>
-                            <a href="#" class="social-link"><i class="fab fa-twitter"></i> Twitter</a>
                             <a href="#" class="social-link"><i class="fas fa-envelope"></i> Email</a>
                         </div>
                     </div>
@@ -101,6 +86,16 @@
             </div>
         </section>
     </main>
+
+    <!-- Post Modal -->
+    <div id="post-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="modal-post-content">
+                <!-- Post content will be loaded here -->
+            </div>
+        </div>
+    </div>
 
     <footer>
         <div class="container">
