@@ -190,25 +190,7 @@ This project is open source and available under the [MIT License](LICENSE).
 - GitHub: [@kodurusravani34](https://github.com/kodurusravani34)
 - Blog: [El-Memoir](https://kodurusravani34.github.io/El-Memoir/)
 
-## 🙏 Acknowledgments
 
-- Inspired by Quora's clean and minimal design
-- Font Awesome for beautiful icons
-- MongoDB for database solutions
-- GitHub Pages for free hosting
-
-## 📊 Features Roadmap
-
-- [ ] Search functionality enhancement
-- [ ] Post tags and advanced filtering
-- [ ] Comments system
-- [ ] RSS feed generation
-- [ ] Social media sharing
-- [ ] Analytics integration
-- [ ] PWA support
-- [ ] Multi-language support
-
----
 
 ⭐ **Star this repository if you found it helpful!**
 
